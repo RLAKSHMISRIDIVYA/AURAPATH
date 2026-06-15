@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AuraPath - Preventative Urban Safety Operating System</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet.js Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Custom Style -->
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+
+    <!-- ==========================================================================
+         SCREEN 1: INTERACTIVE LANDING PAGE
+         ========================================================================== -->
+    <div id="landing-screen" class="screen-view active">
+        <div class="landing-container">
+            <header class="landing-header animate-fade-in">
+                <div class="logo-icon-large"><i class="fa-solid fa-shield-halved"></i></div>
+                <h1>AURA<span>PATH</span></h1>
+                <p class="tagline">Preventative Urban Safety Operating System</p>
+                <p class="description">
+                    A proposed urban safety operating system. This console provides an active simulation environment demonstrating the integration of multi-agent safety routing, GMM gait DNA anomaly detection, and decentralized IoT sanctuary meshes.
+                </p>
+            </header>
+
+            <!-- System Status Badges -->
+            <div class="status-grid animate-fade-in">
+                <div class="status-badge">
+                    <span class="status-dot green"></span>
+                    <span class="status-label">CORE HOST:</span>
+                    <span class="status-value text-cyan">ONLINE (14ms)</span>
+                </div>
+                <div class="status-badge">
+                    <span class="status-dot green"></span>
+                    <span class="status-label">MQTT BROKER:</span>
+                    <span class="status-value text-purple">ACTIVE</span>
+                </div>
+                <div class="status-badge">
+                    <span class="status-dot green"></span>
+                    <span class="status-label">DB PORT:</span>
+                    <span class="status-value text-green">POSTGIS v15</span>
+                </div>
+                <div class="status-badge">
+                    <span class="status-dot green"></span>
+                    <span class="status-label">ACTIVE NODES:</span>
+                    <span class="status-value">3 SANCTUARIES</span>
+                </div>
+            </div>
+
+            <!-- Launch Cards -->
+            <div class="launch-grid animate-fade-in">
+                <!-- Card 1: Replay Simulator -->
+                <div class="launch-card border-cyan" onclick="showScreen('simulator')">
+                    <div class="card-icon text-cyan"><i class="fa-solid fa-circle-play"></i></div>
+                    <h3>Municipal Control Console</h3>
+                    <p>Launch the dual-viewport command dashboard and replay active commute safety stories step-by-step.</p>
+                    <button class="launch-btn bg-cyan">LAUNCH CONTROLLER <i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+
+                <!-- Card 2: Tech Specs -->
+                <div class="launch-card border-purple" onclick="showScreen('specs')">
+                    <div class="card-icon text-purple"><i class="fa-solid fa-book-open"></i></div>
+                    <h3>Technical Specifications</h3>
+                    <p>Explore the mathematical formulas, database schemas, security rules, and integration manuals in detail.</p>
+                    <button class="launch-btn bg-purple">EXPLORE SPECS <i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <footer class="landing-footer">
+                <p>© 2026 AuraPath Inc.</p>
+            </footer>
+        </div>
+    </div>
+
+
+    <!-- ==========================================================================
+         SCREEN 2: SIMULATOR & COMMAND CENTER
+         ========================================================================== -->
+    <div id="simulator-screen" class="screen-view">
+        <header class="main-header">
+            <div class="logo-area" onclick="showScreen('landing')">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <div>
+                    <h1>AURA<span>PATH</span></h1>
+                    <p>Preventative Urban Safety Operating System</p>
+                </div>
+            </div>
+            <div class="header-nav-buttons">
+                <button class="btn-nav" onclick="showScreen('landing')"><i class="fa-solid fa-house"></i> Home</button>
+                <button class="btn-nav" onclick="showScreen('specs')"><i class="fa-solid fa-book"></i> Specs</button>
+                <button class="btn-nav btn-help" onclick="toggleWelcomeTour()"><i class="fa-solid fa-circle-question"></i> Help Tour</button>
+            </div>
+            <div class="system-ping-badge">
+                <span class="badge-title"><i class="fa-solid fa-server"></i> SIMULATION ENVIRONMENT</span>
+                <span class="badge-status">PROPOSED ARCHITECTURE</span>
+            </div>
+        </header>
+
+        <main class="app-container">
+            
+            <!-- SCENARIO REPLAY CONTROLLER & NARRATION BOARD -->
+            <section class="replay-console-section">
+                
+                <!-- Replay Header / Case Selector -->
+                <div class="replay-header">
+                    <div class="replay-brand">
+                        <i class="fa-solid fa-circle-play text-cyan"></i>
+                        <span>SCENARIO REPLAY ENGINE</span>
+                    </div>
+                    <div class="case-tabs">
+                        <button class="case-tab active" id="case-tab-1" onclick="selectCase(1)">
+                            CASE 1: Standard Safe Commute (Corridor B)
+                        </button>
+                        <button class="case-tab" id="case-tab-2" onclick="selectCase(2)">
+                            CASE 2: Alley Deviation & SOS Dispatch (Route A)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Replay Main Board -->
+                <div class="replay-board-card">
+                    <!-- Left: Narration Details -->
+                    <div class="replay-narrator">
+                        <div class="narrator-meta">
+                            <span class="phase-badge" id="replay-phase">PHASE 1: SAFE CORRIDOR ENGINE</span>
+                            <span class="time-badge" id="replay-time">09:15 PM</span>
+                        </div>
+                        <h2 id="replay-title">Priya Exits Metro</h2>
+                        <p id="replay-desc">Priya exits Metro Gate 4. Google Maps suggests Route A (18m, unlit alleys). AuraPath calculates Route B (22m, UVI 91%). Priya selects Route B.</p>
+                        
+                        <!-- Control Buttons -->
+                        <div class="replay-actions">
+                            <button id="btn-next-event" class="btn-primary" onclick="nextEvent()">
+                                ACKNOWLEDGE & CONTINUE <i class="fa-solid fa-chevron-right"></i>
+                            </button>
+                            <button class="btn-secondary" onclick="resetReplay()">
+                                <i class="fa-solid fa-rotate-left"></i> RESTART
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Middle: Tech Badge Stack -->
+                    <div class="replay-stack">
+                        <div class="section-title">ACTIVE PLATFORM STACK</div>
+                        <div class="tech-badge-grid">
+                            <div class="tech-badge-item" id="tech-badge-uvi" data-tooltip="UVI Pathfinder: Graph search weighting lighting levels and retail hours."><i class="fa-solid fa-calculator"></i> UVI Pathfinder</div>
+                            <div class="tech-badge-item" id="tech-badge-ws" data-tooltip="WSS Connection: Low-latency duplex telemetry streaming at 0.5s updates."><i class="fa-solid fa-network-wired"></i> WSS Connection</div>
+                            <div class="tech-badge-item" id="tech-badge-dna" data-tooltip="CommuteDNA AI: Gait GMM deviation tracking + physiological fusion models."><i class="fa-solid fa-dna"></i> CommuteDNA AI</div>
+                            <div class="tech-badge-item" id="tech-badge-tflite" data-tooltip="TFLite Audio AI: Local on-device spectrogram classification of screams and vocal distress."><i class="fa-solid fa-microphone"></i> TFLite Audio AI</div>
+                            <div class="tech-badge-item" id="tech-badge-iot" data-tooltip="BLE Sanctuary Beacons: Hardware BLE nodes matching geofenced merchant registration codes."><i class="fa-solid fa-rss"></i> BLE Sanctuary Beacons</div>
+                            <div class="tech-badge-item" id="tech-badge-postgis" data-tooltip="PostGIS Spatial Grids: Database index computing Fréchet distances and patrol coordinates."><i class="fa-solid fa-map-location-dot"></i> PostGIS Spatial Grids</div>
+                        </div>
+                    </div>
+
+                    <!-- Right: AI Reasoning Logs -->
+                    <div class="replay-reasoning">
+                        <div class="section-title">SPATIAL AGENT REASONING</div>
+                        <div class="reasoning-box" id="replay-reasoning-box">
+                            OCR Agent: Active lighting verified at 95% on Route B. Storefront density: 8 nodes. Google maps Route A rejected due to low lighting (35%).
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- VIEWPORTS LAYOUT -->
+            <div class="viewports-wrapper">
+                
+                <!-- VIEWPORT 1: MOBILE CLIENT PHONE -->
+                <section class="mobile-viewport">
+                    <div class="viewport-title-card">
+                        <span class="viewport-badge border-cyan text-cyan">VIEWPORT 1</span>
+                        <h3>COMMUTER APP COMPANION</h3>
+                        <p>Streams telemetry, GMM gait anomalies, & BLE sanctuary check-ins.</p>
+                    </div>
+                    <div class="phone-frame">
+                        <div class="phone-notch"></div>
+                        <div class="phone-screen">
+                            
+                            <!-- Phone Status Bar -->
+                            <div class="phone-status-bar">
+                                <span class="time" id="phone-clock">19:15</span>
+                                <div class="icons">
+                                    <i class="fa-solid fa-signal"></i>
+                                    <i class="fa-solid fa-wifi"></i>
+                                    <i class="fa-solid fa-battery-full"></i>
+                                </div>
+                            </div>
+
+                            <!-- App Inner viewport -->
+                            <div class="app-screen" id="app-screen">
+                                
+                                <!-- ROUTE ROUTING SELECT SCREEN (STEP 1 ONLY) -->
+                                <div class="app-body" id="routing-selection-screen">
+                                    <div class="app-nav">
+                                        <div class="nav-title">Plan Safe Route</div>
+                                        <span class="user-avatar-initials">PS</span>
+                                    </div>
+
+                                    <div class="location-search-card">
+                                        <div class="search-input-group">
+                                            <div class="search-dot cyan-bg"></div>
+                                            <input type="text" value="Metro Station Exit 4" readonly>
+                                        </div>
+                                        <div class="search-input-group border-top">
+                                            <div class="search-dot purple-bg"></div>
+                                            <input type="text" value="Green Glen Layout Home" readonly>
+                                        </div>
+                                    </div>
+
+                                    <div class="route-compare-list">
+                                        <!-- Safe Route B -->
+                                        <div class="route-option-card active" onclick="selectRouteOption('B')">
+                                            <div class="card-left">
+                                                <div class="r-badge green-badge">RECOMMENDED (SAFEST)</div>
+                                                <h3>AuraPath Safe Corridor B</h3>
+                                                <p><i class="fa-solid fa-lightbulb text-amber"></i> Lighting: 95% | 8 Active Stores</p>
+                                            </div>
+                                            <div class="card-right">
+                                                <span class="dur text-green">22 min</span>
+                                                <span class="dist">980m | UVI 91%</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Standard Speed Route A -->
+                                        <div class="route-option-card" onclick="selectRouteOption('A')">
+                                            <div class="card-left">
+                                                <div class="r-badge red-badge">UNLIT ALLEY EXPOSURE</div>
+                                                <h3>Google Maps Route A</h3>
+                                                <p><i class="fa-solid fa-moon text-muted"></i> Lighting: 35% | 1 Active Store</p>
+                                            </div>
+                                            <div class="card-right">
+                                                <span class="dur text-orange">18 min</span>
+                                                <span class="dist">820m | UVI 62%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button class="btn-green-confirm margin-top-auto" id="btn-start-navigation">
+                                        ACTIVATE SAFE CORRIDOR
+                                    </button>
+                                </div>
+
+                                <!-- SCREEN: ACTIVE NAVIGATION (STEPS 2-7) -->
+                                <div class="app-body active" id="navigation-screen">
+                                    <div class="app-nav">
+                                        <div class="nav-title">AuraPath Companion</div>
+                                        <span class="user-avatar-initials">PS</span>
+                                    </div>
+
+                                    <!-- Route Progress Card -->
+                                    <div class="route-progress-card">
+                                        <div class="progress-details">
+                                            <div>
+                                                <div class="label">CURRENT COMMUTE</div>
+                                                <div class="value">Priya &rarr; Green Glen Home</div>
+                                            </div>
+                                            <div class="eta-box">
+                                                <div class="eta" id="mobile-eta">22 min</div>
+                                                <div class="eta-label">ETA</div>
+                                            </div>
+                                        </div>
+                                        <div class="progress-bar-container">
+                                            <div class="progress-bar" id="mobile-progress-bar" style="width: 0%;"></div>
+                                            <div class="progress-marker" id="mobile-progress-marker" style="left: 0%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- FLAGSHIP WIDGET: AURA GUARDIAN NETWORK -->
+                                    <div class="widget network-widget">
+                                        <div class="widget-header">
+                                            <span><i class="fa-solid fa-shield-halved text-cyan"></i> AURA GUARDIAN NETWORK™</span>
+                                            <span class="widget-tag green-tag" id="network-protection-status">ACTIVE CO-SHIELD</span>
+                                        </div>
+                                        <div class="network-body">
+                                            <div class="network-circle-wrapper">
+                                                <div class="network-radial-score">
+                                                    <svg viewBox="0 0 36 36" class="circular-chart cyan">
+                                                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                                        <path class="circle" id="network-protection-circle" stroke-dasharray="96, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                                    </svg>
+                                                    <div class="network-score-text">
+                                                        <span class="score-num" id="network-protection-num">96%</span>
+                                                        <span class="score-lbl">Protection</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="network-layers-grid">
+                                                <div class="layer-tag active" id="layer-corridor"><i class="fa-solid fa-route"></i> Corridor</div>
+                                                <div class="layer-tag active" id="layer-cohort"><i class="fa-solid fa-people-group"></i> Cohort</div>
+                                                <div class="layer-tag active" id="layer-sanctuary"><i class="fa-solid fa-store"></i> Sanctuary</div>
+                                                <div class="layer-tag active" id="layer-patrol"><i class="fa-solid fa-user-shield"></i> Patrol</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- DYNAMIC SAFETY BUBBLE / COHORT PARTNERSHIP -->
+                                    <div class="widget cohort-widget" id="mobile-cohort-widget">
+                                        <div class="widget-header">
+                                            <span><i class="fa-solid fa-people-arrows"></i> DYNAMIC SAFETY BUBBLE™</span>
+                                            <span class="status-indicator online" id="mobile-cohort-status">PAIRED</span>
+                                        </div>
+                                        <div class="cohort-paired-info" id="cohort-info-paired">
+                                            <div class="cohort-avatar-initials">SM
+                                                <div class="verified-badge"><i class="fa-solid fa-check"></i></div>
+                                            </div>
+                                            <div class="cohort-meta">
+                                                <div class="cohort-name">Sarah M. <span class="badge">Verified</span></div>
+                                                <div class="cohort-dist"><i class="fa-solid fa-person-walking"></i> Walking bubble: <b>1.5m</b></div>
+                                                <div class="cohort-match">Match probability: <b>98%</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="cohort-fallback-info hidden" id="cohort-info-fallback">
+                                            <div class="fallback-header">
+                                                <div class="warning-icon"><i class="fa-solid fa-triangle-exclamation pulse"></i></div>
+                                                <div>
+                                                    <div class="title">SMART GUARDIAN ACTIVE</div>
+                                                    <div class="subtitle">Fallback: Solo walking monitoring</div>
+                                                </div>
+                                            </div>
+                                            <div class="fallback-features-grid">
+                                                <div class="f-item">
+                                                    <i class="fa-solid fa-gauge-high text-amber"></i>
+                                                    <span>GPS: 2Hz</span>
+                                                </div>
+                                                <div class="f-item">
+                                                    <i class="fa-solid fa-microphone-lines text-green"></i>
+                                                    <span>Audio AI: On</span>
+                                                </div>
+                                                <div class="f-item">
+                                                    <i class="fa-solid fa-network-wired text-cyan"></i>
+                                                    <span>Beacons: On</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- COMMUTE DNA BIOMETRIC LOOP -->
+                                    <div class="widget dna-widget">
+                                        <div class="widget-header">
+                                            <span><i class="fa-solid fa-dna text-purple"></i> COMMUTE DNA™ BIOMETRIC LOOP</span>
+                                            <span class="widget-tag purple-tag" id="dna-tag"><span id="audio-db">35 dB</span></span>
+                                        </div>
+                                        <div class="dna-body">
+                                            <div class="sensor-grid">
+                                                <div class="sensor-card">
+                                                    <div class="sensor-icon"><i class="fa-solid fa-shoe-prints"></i></div>
+                                                    <div class="sensor-label">Walking Gait</div>
+                                                    <div class="sensor-status text-green" id="sensor-gait">Normal</div>
+                                                </div>
+                                                <div class="sensor-card">
+                                                    <div class="sensor-icon"><i class="fa-solid fa-heart pulse"></i></div>
+                                                    <div class="sensor-label">Heart Rate</div>
+                                                    <div class="sensor-status text-green" id="sensor-heart">76 BPM</div>
+                                                </div>
+                                                <div class="sensor-card">
+                                                    <div class="sensor-icon"><i class="fa-solid fa-microphone"></i></div>
+                                                    <div class="sensor-label">Ambient Audio</div>
+                                                    <div class="sensor-status text-green" id="audio-status-text">Quiet</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- Audio visualizer bars -->
+                                            <div class="audio-visualizer" style="height: 14px; margin-top: 6px;">
+                                                <div class="bar" style="height: 30%"></div>
+                                                <div class="bar" style="height: 40%"></div>
+                                                <div class="bar" style="height: 25%"></div>
+                                                <div class="bar" style="height: 55%"></div>
+                                                <div class="bar" style="height: 35%"></div>
+                                                <div class="bar" style="height: 20%"></div>
+                                                <div class="bar" style="height: 45%"></div>
+                                                <div class="bar" style="height: 30%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- SANCTUARY MESH CARD -->
+                                    <div class="widget sanctuary-widget" id="mobile-sanctuary-widget">
+                                        <div class="widget-header">
+                                            <span><i class="fa-solid fa-house-chimney-medical text-cyan"></i> SANCTUARY MESH™ NETWORK</span>
+                                            <span class="widget-tag beacon-search" id="sanctuary-status-tag"><i class="fa-solid fa-rss-feed fa-spin"></i> Scanning Beacons...</span>
+                                        </div>
+                                        <div class="sanctuary-details">
+                                            <div class="sanctuary-row">
+                                                <div class="store-icon"><i class="fa-solid fa-store"></i></div>
+                                                <div class="store-meta">
+                                                    <div class="store-name" id="mobile-sanctuary-name">Scanning Beacons...</div>
+                                                    <div class="store-address" id="mobile-sanctuary-addr">-</div>
+                                                </div>
+                                            </div>
+                                            <div class="sanctuary-actions-grid" style="display: flex; gap: 8px; margin-top: 8px;">
+                                                <button id="btn-scan-qr" class="btn-secondary" style="flex: 1;">
+                                                    <i class="fa-solid fa-qrcode"></i> Scan Shop QR
+                                                </button>
+                                                <button id="btn-sanctuary-enter" class="btn-secondary" style="flex: 1.2;" disabled>
+                                                    <i class="fa-solid fa-circle-check"></i> Shelter Lock
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- VERIFICATION SCANNED SUCCESSFUL CARD (NEW OVERLAY CARD FOR CLARITY) -->
+                                    <div class="widget connection-success-card hidden" id="sanctuary-success-overlay" style="background: rgba(16, 185, 129, 0.1); border: 2.5px solid var(--color-green); margin-top: 8px;">
+                                        <div style="display: flex; gap: 10px; align-items: center;">
+                                            <div class="success-icon-badge" style="width: 36px; height: 36px; background: var(--color-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.2rem;"><i class="fa-solid fa-check-double"></i></div>
+                                            <div>
+                                                <div style="font-size: 0.8rem; font-weight: 800; color: #fff;">AUTHENTICATION SUCCESS</div>
+                                                <div style="font-size: 0.68rem; color: var(--color-green); font-weight: 600;">Verified Merchant Hash: APPROVED</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- QR SCANNER CAMERA VIEWPORT OVERLAY -->
+                                    <div class="scanner-overlay-box hidden" id="qr-scanner-modal">
+                                        <div class="scanner-content">
+                                            <div class="scanner-viewfinder">
+                                                <div class="scanner-laser"></div>
+                                                <div class="corner top-left"></div>
+                                                <div class="corner top-right"></div>
+                                                <div class="corner bottom-left"></div>
+                                                <div class="corner bottom-right"></div>
+                                            </div>
+                                            <div class="scanner-text">
+                                                <h3>SCANNING SANCTUARY QR</h3>
+                                                <p>Align merchant registration code within target viewfinder</p>
+                                            </div>
+                                            <button class="btn-secondary" id="btn-cancel-scan" style="border-color: var(--color-red); color: var(--color-red); background: rgba(239, 68, 68, 0.1);">
+                                                CANCEL SCAN
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- DEVIATION WARNING MODAL -->
+                                    <div class="deviation-alert-box hidden" id="deviation-alert-modal">
+                                        <div class="alert-content animate-pulse-border">
+                                            <i class="fa-solid fa-triangle-exclamation alert-big-icon"></i>
+                                            <h3>ROUTE DEVIATION DETECTED</h3>
+                                            <p>CommuteDNA indicates an unapproved path deviation. Are you safe?</p>
+                                            <div class="countdown-circle">
+                                                <span class="countdown-num" id="countdown-val">10</span>
+                                            </div>
+                                            <button class="btn-green-confirm" id="btn-confirm-safe">I AM SAFE (Enter PIN)</button>
+                                            <div class="countdown-footer">If no response, automatic emergency loop will deploy.</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- SAFE ARRIVAL VERIFICATION PROMPT -->
+                                    <div class="deviation-alert-box hidden" id="arrival-verification-modal">
+                                        <div class="alert-content">
+                                            <i class="fa-solid fa-house-user alert-big-icon text-green"></i>
+                                            <h3>SAFE ARRIVAL VERIFIED</h3>
+                                            <p>You have reached Green Glen Layout home. Please confirm arrival.</p>
+                                            <button class="btn-green-confirm" id="btn-confirm-arrival">CONFIRM SAFE ARRIVAL</button>
+                                            <button class="btn-secondary" id="btn-arrival-denied" style="margin-top: 10px;">I NEED ASSISTANCE</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- CASE 2 INTERCEPTED SECURED PROMPT -->
+                                    <div class="deviation-alert-box hidden" id="police-secured-modal">
+                                        <div class="alert-content" style="border-color: var(--color-cyan);">
+                                            <i class="fa-solid fa-user-shield alert-big-icon text-cyan"></i>
+                                            <h3>SECURED BY PATROL UNIT</h3>
+                                            <p>Police Patrol Unit 04 has intercepted you. Emergency safety protocols are active.</p>
+                                            <button class="btn-green-confirm" id="btn-confirm-secured" style="background: var(--color-cyan);" onclick="closeSecuredModal()">ACKNOWLEDGE & CLOSE TRIP</button>
+                                        </div>
+                                    </div>
+
+                                    <!-- AI ASSISTANT CHAT DRAWER -->
+                                    <div class="chat-drawer" id="chat-drawer">
+                                        <div class="chat-header" id="chat-header-toggle">
+                                            <span><i class="fa-solid fa-circle-nodes"></i> Aura AI Safety Assistant</span>
+                                            <i class="fa-solid fa-chevron-up" id="chat-toggle-icon"></i>
+                                        </div>
+                                        <div class="chat-body" id="chat-body">
+                                            <div class="chat-history" id="chat-history">
+                                                <div class="message system-msg">Hello Priya. I am monitoring your commute. Click an option below to query my spatial safety context:</div>
+                                            </div>
+                                            <div class="chat-actions">
+                                                <button class="chat-chip" onclick="askAiQuestion('route')">Why was this route selected?</button>
+                                                <button class="chat-chip" onclick="askAiQuestion('risk')">What is my current risk level?</button>
+                                                <button class="chat-chip" onclick="askAiQuestion('protect')">What currently protects me?</button>
+                                                <button class="chat-chip" onclick="askAiQuestion('sanctuary')">Where is the nearest sanctuary?</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- EMERGENCY SOS BAR -->
+                                    <div class="sos-bar">
+                                        <button class="sos-btn" id="mobile-sos-btn">
+                                            <i class="fa-solid fa-bell"></i> SHIELD SOS MODE
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- Phone Bottom Nav Bar -->
+                            <div class="phone-nav-bar">
+                                <div class="nav-btn"><i class="fa-solid fa-chevron-left"></i></div>
+                                <div class="nav-btn home-btn" onclick="showScreen('landing')"></div>
+                                <div class="nav-btn"><i class="fa-solid fa-bars"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEWPORT 2: SAFETY DIGITAL TWIN CITY DASHBOARD -->
+                <section class="twin-viewport">
+                    <div class="viewport-title-card">
+                        <span class="viewport-badge border-purple text-purple">VIEWPORT 2</span>
+                        <h3>MUNICIPAL SAFETY TWIN</h3>
+                        <p>Receives WebSocket streams, monitors UVI, & coordinates dispatches.</p>
+                    </div>
+                    <div class="dashboard-panel">
+                        
+                        <!-- Dashboard Header -->
+                        <div class="dashboard-header">
+                            <div class="header-left">
+                                <div class="twin-badge">MUNICIPAL COMMAND CONTROL</div>
+                                <h2 id="twin-header-title">SAFETY DIGITAL TWIN: BENGALURU SECTOR</h2>
+                            </div>
+                            <div class="system-status-indicator">
+                                <div class="status-light-green animate-pulse" id="twin-indicator-light"></div>
+                                <span id="twin-indicator-text">SYSTEM CORE: ACTIVE MONITORING</span>
+                            </div>
+                        </div>
+
+                        <!-- Main Dashboard Content Grid -->
+                        <div class="dashboard-grid">
+                            
+                            <!-- Map Workspace -->
+                            <div class="map-container-box">
+                                <div class="map-info-overlay">
+                                    <div class="overlay-panel">
+                                        <div class="metric-row">
+                                            <span class="lbl"><i class="fa-solid fa-location-dot"></i> Commuter</span>
+                                            <span class="val">Priya (Active)</span>
+                                        </div>
+                                        <div class="metric-row">
+                                            <span class="lbl"><i class="fa-solid fa-people-group"></i> Cohort bubble</span>
+                                            <span class="val" id="twin-bubble-partner">Searching...</span>
+                                        </div>
+                                        <div class="metric-row">
+                                            <span class="lbl"><i class="fa-solid fa-store"></i> Sanctuaries</span>
+                                            <span class="val">3 Nodes Online</span>
+                                        </div>
+                                        <div class="metric-row">
+                                            <span class="lbl"><i class="fa-solid fa-user-shield"></i> Patrol Intercept</span>
+                                            <span class="val" id="twin-patrol-units">Unit 04 (Standby)</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="twin-map"></div>
+                            </div>
+
+                            <!-- Side Control Panel for twin -->
+                            <div class="dashboard-sidebar">
+                                
+                                <!-- SPATIAL AI AGENTS CONSOLE -->
+                                <div class="side-card">
+                                    <h3><i class="fa-solid fa-brain text-purple"></i> SPATIAL AI AGENTS NETWORK</h3>
+                                    <div class="agent-list" style="display: flex; flex-direction: column; gap: 8px;">
+                                        <div class="agent-row" data-tooltip="OCR Agent: Scans dynamic streetlight pole tag serials, updating UVI lighting values." style="display: flex; gap: 10px; align-items: flex-start; background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; border-left: 2.5px solid var(--color-cyan);">
+                                            <div class="agent-icon" style="font-size: 0.9rem; color: var(--color-cyan); margin-top: 2px;"><i class="fa-solid fa-eye"></i></div>
+                                            <div class="agent-meta" style="flex: 1;">
+                                                <div class="agent-name" style="font-size: 0.72rem; font-weight: 700; color: #fff;">Infrastructure OCR Agent <span class="badge badge-green" style="font-size: 0.55rem; padding: 0px 3px;">Active</span></div>
+                                                <div class="agent-status" id="agent-ocr-log" style="font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 1px;">Scanning streetlight grid... status: OK</div>
+                                            </div>
+                                        </div>
+                                        <div class="agent-row" data-tooltip="Merchant Agent: Verifies dynamically generated merchant QR/TOTP codes during shelter check-ins." style="display: flex; gap: 10px; align-items: flex-start; background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; border-left: 2.5px solid var(--color-green);">
+                                            <div class="agent-icon" style="font-size: 0.9rem; color: var(--color-green); margin-top: 2px;"><i class="fa-solid fa-qrcode"></i></div>
+                                            <div class="agent-meta" style="flex: 1;">
+                                                <div class="agent-name" style="font-size: 0.72rem; font-weight: 700; color: #fff;">Merchant Verification Agent <span class="badge badge-green" style="font-size: 0.55rem; padding: 0px 3px;" id="agent-merchant-badge">Standby</span></div>
+                                                <div class="agent-status" id="agent-merchant-log" style="font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 1px;">Awaiting merchant QR / BLE pings</div>
+                                            </div>
+                                        </div>
+                                        <div class="agent-row" data-tooltip="DNA Agent: Fuses accelerometers, heart rates, and ambient decibels to track dynamic stress." style="display: flex; gap: 10px; align-items: flex-start; background: rgba(0,0,0,0.15); padding: 8px; border-radius: 8px; border-left: 2.5px solid var(--color-purple);">
+                                            <div class="agent-icon" style="font-size: 0.9rem; color: var(--color-purple); margin-top: 2px;"><i class="fa-solid fa-microchip"></i></div>
+                                            <div class="agent-meta" style="flex: 1;">
+                                                <div class="agent-name" style="font-size: 0.72rem; font-weight: 700; color: #fff;">CommuteDNA Anomaly Agent <span class="badge badge-green" style="font-size: 0.55rem; padding: 0px 3px;" id="agent-dna-badge">Active</span></div>
+                                                <div class="agent-status" id="agent-dna-log" style="font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-mono); margin-top: 1px;">Fusing gait, audio, & trajectory inputs</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- ALGORITHMIC KPI METERS -->
+                                <div class="side-card">
+                                    <h3><i class="fa-solid fa-chart-line text-cyan"></i> DYNAMIC SYSTEM ANALYTICS</h3>
+                                    <div class="kpi-grid">
+                                        <div class="kpi-card">
+                                            <div class="kpi-label">UVI ROUTE SCORE</div>
+                                            <div class="kpi-val text-green" id="twin-kpi-uvi">91%</div>
+                                            <div class="kpi-sub" id="twin-kpi-route-desc">Safe Corridor Route B</div>
+                                        </div>
+                                        <div class="kpi-card">
+                                            <div class="kpi-label">AURA TRUSTSCORE™</div>
+                                            <div class="kpi-val text-green" id="twin-kpi-trust">94/100</div>
+                                            <div class="kpi-sub">High compliance metrics</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- REAL-TIME LOG OVERLAY -->
+                                <div class="side-card log-card">
+                                    <h3><i class="fa-solid fa-network-wired text-purple"></i> LIVE WEBSOCKET LOGS & MQTT STACK</h3>
+                                    <div class="log-output-box" id="log-box">
+                                        <!-- Event logs populate here -->
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>© 2026 AuraPath</p>
+        </footer>
+    </div>
+
+
+    <!-- ==========================================================================
+         SCREEN 3: TECHNICAL SPECIFICATIONS VIEWPORT (INTERACTIVE DOCS READER)
+         ========================================================================== -->
+    <div id="specs-screen" class="screen-view">
+        <header class="main-header">
+            <div class="logo-area" onclick="showScreen('landing')">
+                <div class="logo-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <div>
+                    <h1>AURA<span>PATH</span></h1>
+                    <p>Preventative Urban Safety Operating System</p>
+                </div>
+            </div>
+            <div class="header-nav-buttons">
+                <button class="btn-nav" onclick="showScreen('landing')"><i class="fa-solid fa-house"></i> Home</button>
+                <button class="btn-nav" onclick="showScreen('simulator')"><i class="fa-solid fa-circle-play"></i> Simulator</button>
+            </div>
+            <div class="system-ping-badge">
+                <span class="badge-title"><i class="fa-solid fa-book-open"></i> DOCS ENGINE</span>
+                <span class="badge-status text-cyan">ACTIVE VIEW</span>
+            </div>
+        </header>
+
+        <main class="specs-layout-container">
+            <aside class="specs-sidebar">
+                <h3 class="sidebar-title">TECHNICAL DOCUMENTS</h3>
+                <div class="specs-tabs">
+                    <button class="specs-tab-btn active" onclick="switchSpecTab('architecture')">
+                        <i class="fa-solid fa-database"></i> System Architecture
+                    </button>
+                    <button class="specs-tab-btn" onclick="switchSpecTab('math')">
+                        <i class="fa-solid fa-calculator"></i> AI & Algorithmic Math
+                    </button>
+                    <button class="specs-tab-btn" onclick="switchSpecTab('deployment')">
+                        <i class="fa-solid fa-network-wired"></i> Municipal Integration & Deployment
+                    </button>
+                    <button class="specs-tab-btn" onclick="switchSpecTab('engineering')">
+                        <i class="fa-solid fa-gears"></i> Engineering FAQ & Reliability Manual
+                    </button>
+                </div>
+            </aside>
+
+            <section class="specs-content-area" id="specs-content-area">
+                <!-- Renders dynamically from app.js -->
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>© 2026 AuraPath</p>
+        </footer>
+    </div>
+
+    <!-- Guided Onboarding Tour Overlay -->
+    <div id="welcome-tour-overlay" class="tour-overlay hidden">
+        <div class="tour-modal animate-scale-in">
+            <div class="tour-header">
+                <div class="tour-title-area">
+                    <i class="fa-solid fa-shield-halved text-cyan animate-pulse"></i>
+                    <h2>AuraPath Control Console Guided Tour</h2>
+                </div>
+                <button class="tour-close-btn" onclick="toggleWelcomeTour()">&times;</button>
+            </div>
+            <div class="tour-body">
+                <p class="tour-intro">
+                    Welcome to the <strong>AuraPath Urban Safety Operating System</strong> simulator. This console demonstrates how our platform shifts safety from a reactive post-incident panic button to an active, preventative, multi-agent urban shield.
+                </p>
+                <div class="tour-steps">
+                    <div class="tour-step-card">
+                        <div class="step-num">📱</div>
+                        <div class="step-content">
+                            <h3>Viewport 1: Commuter Companion App (Left)</h3>
+                            <p>Simulates the citizen's mobile client. It monitors heart rate spikes, step frequencies (gait DNA), ambient decibels (TFLite), and triggers dynamic BLE sanctuary check-in scans.</p>
+                        </div>
+                    </div>
+                    <div class="tour-step-card">
+                        <div class="step-num">🖥️</div>
+                        <div class="step-content">
+                            <h3>Viewport 2: Municipal Digital Twin (Right)</h3>
+                            <p>Simulates the city command center dashboard. It renders the live tracking map, calculates the A* Safe Corridor using streetlights (UVI), coordinates patrol intercepts, and logs real-time WebSockets/MQTT packets.</p>
+                        </div>
+                    </div>
+                    <div class="tour-step-card">
+                        <div class="step-num">🔄</div>
+                        <div class="step-content">
+                            <h3>Real-Time Synchronous Connection</h3>
+                            <p>The companion app and digital twin are dynamically linked. Telemetry changes on the phone update the command center map, agent states, and logs instantaneously.</p>
+                        </div>
+                    </div>
+                    <div class="tour-step-card">
+                        <div class="step-num">🚀</div>
+                        <div class="step-content">
+                            <h3>How to Run the Simulation</h3>
+                            <p>Use the <strong>Scenario Replay Engine</strong> header panel. Select <strong>Case 1</strong> or <strong>Case 2</strong>, then click <strong>"Acknowledge & Continue"</strong> to step through the commute stages and watch the system respond.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tour-footer">
+                <div class="tour-footer-help">
+                    <i class="fa-solid fa-circle-question text-cyan"></i> Click the <strong>Help Tour</strong> button in the header at any time to re-open this guide.
+                </div>
+                <button class="btn-green-confirm" style="width: auto; padding: 10px 24px;" onclick="toggleWelcomeTour()">START SIMULATION</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Logic Script -->
+    <script src="app.js"></script>
+</body>
+</html>
